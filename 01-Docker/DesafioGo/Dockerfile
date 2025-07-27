@@ -1,18 +1,24 @@
-FROM golang:1.19
+FROM golang:1.19-alpine AS builder
 
 # Set destination for COPY
 WORKDIR /app
 
 # Download Go modules
 COPY go.mod ./
-RUN go mod download
+
 
 # Copy the source code. Note the slash at the end, as explained in
 # https://docs.docker.com/reference/dockerfile/#copy
 COPY *.go ./
 
-# Build
-RUN CGO_ENABLED=0 GOOS=linux go build -o /01-docker-desafio-go
+# Build without debug
+RUN go build -ldflags="-s -w" -o 01-docker-desafio-go
+
+# Etapa final com imagem mínima
+# remove shell, libs, etc
+FROM scratch
+
+COPY --from=builder /app/01-docker-desafio-go /01-docker-desafio-go
 
 # Optional:
 # To bind to a TCP port, runtime parameters must be supplied to the docker command.
@@ -22,4 +28,4 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o /01-docker-desafio-go
 EXPOSE 8080
 
 # Run
-CMD ["/01-docker-desafio-go"]
+ENTRYPOINT ["/01-docker-desafio-go"]
