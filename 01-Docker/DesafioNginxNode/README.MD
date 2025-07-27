@@ -20,6 +20,7 @@ Ao acessar `http://localhost:8080`, o Nginx deve redirecionar a requisição par
 ```
 
 ## 🧱 Estrutura do Projeto
+```pgsql
 .
 ├── app               # Aplicação Node.js
 │   ├── Dockerfile
@@ -29,6 +30,7 @@ Ao acessar `http://localhost:8080`, o Nginx deve redirecionar a requisição par
 │   └── default.conf
 ├── docker-compose.yml
 └── README.md
+```
 
 ## 🚀 Como executar
 
